@@ -17,7 +17,7 @@ public enum Signos {
     LIBRA(MonthDay.of(9, 23), MonthDay.of(10, 22)),
     ESCORPIÃO(MonthDay.of(10, 23), MonthDay.of(11, 21)),
     SAGITÁRIO(MonthDay.of(11, 22), MonthDay.of(12, 21)),
-    CAPRICÓRNIO(MonthDay.of(12, 22), MonthDay.of(2, 20));
+    CAPRICÓRNIO(MonthDay.of(12, 22), MonthDay.of(1, 20));
 
     private final MonthDay dataInicioSigno;
     private final MonthDay dataFimSigno;
