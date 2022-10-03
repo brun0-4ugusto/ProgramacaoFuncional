@@ -1,9 +1,9 @@
 package JavaStream.service;
 
-import JavaStream.Geracao;
-import JavaStream.Pessoa;
-import JavaStream.Signos;
-import JavaStream.repository.Repository;
+import JavaStream.model.Geracao;
+import JavaStream.model.Pessoa;
+import JavaStream.model.Signos;
+import JavaStream.repository.PessoaRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 public class Service {
-    private final Repository repository;
+    private final PessoaRepository repository;
 
     // TODO: Obter a lista de pessoas que são do signo X e tem mais de Y anos.
     public List<Pessoa> retornaSignoIdade(Signos signo, int idade) {

@@ -1,7 +1,9 @@
 package JavaStream;
 
 import JavaStream.config.Config;
-import JavaStream.repository.Repository;
+import JavaStream.model.Geracao;
+import JavaStream.model.Pessoa;
+import JavaStream.repository.PessoaRepository;
 import JavaStream.service.Service;
 
 import java.time.LocalDate;
@@ -11,7 +13,7 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws Exception {
-        Repository repository = inicializarRepository();
+        PessoaRepository repository = inicializarRepository();
         Service service = new Service(repository);
 
         System.out.println(service.retornaIdadeMedia());
@@ -23,8 +25,8 @@ public class Main {
 
     }
 
-    private static Repository inicializarRepository() throws Exception {
-        Repository repository = new Repository(Config.getH2Connection());
+    private static PessoaRepository inicializarRepository() throws Exception {
+        PessoaRepository repository = new PessoaRepository(Config.getH2Connection());
         repository.criarTabelaPessoa();
         repository.inserirPessoas(List.of(
             new Pessoa("Artur Barreto", "Fortaleza-CE", LocalDate.of(1987, Month.MARCH, 25)),

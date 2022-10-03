@@ -1,4 +1,4 @@
-package JavaStream;
+package JavaStream.model;
 
 import java.time.MonthDay;
 import java.util.ArrayList;
