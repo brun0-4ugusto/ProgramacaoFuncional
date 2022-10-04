@@ -1,4 +1,4 @@
-package JavaStream;
+package JavaStream.model;
 
 import java.time.MonthDay;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public enum Signos {
     }
 
     public static List<MonthDay> getDataInicioSignos() {
-        List<MonthDay> startList = new ArrayList<MonthDay>();
+        List<MonthDay> startList = new ArrayList<>();
 
         for(Signos sign : values()) {
             startList.add(sign.dataInicioSigno);
@@ -37,7 +37,7 @@ public enum Signos {
     }
 
     public static List<MonthDay> getDataFimSignos() {
-        List<MonthDay> endList = new ArrayList<MonthDay>();
+        List<MonthDay> endList = new ArrayList<>();
 
         for(Signos sign : values()) {
             endList.add(sign.dataFimSigno);

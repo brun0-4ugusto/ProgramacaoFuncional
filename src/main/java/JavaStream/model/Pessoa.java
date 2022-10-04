@@ -1,4 +1,4 @@
-package JavaStream;
+package JavaStream.model;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,6 +1,5 @@
-package JavaStream;
+package JavaStream.model;
 
-import java.time.MonthDay;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
