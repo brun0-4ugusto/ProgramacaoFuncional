@@ -28,33 +28,28 @@ public enum Signos {
     }
 
     public static List<MonthDay> getDataInicioSignos() {
-        List<MonthDay> startList = new ArrayList<>();
 
-        for(Signos sign : values()) {
-            startList.add(sign.dataInicioSigno);
-        }
-        return startList;
+        return Arrays.stream(values())
+                .map(s -> s.dataInicioSigno)
+                .toList();
     }
 
     public static List<MonthDay> getDataFimSignos() {
-        List<MonthDay> endList = new ArrayList<>();
 
-        for(Signos sign : values()) {
-            endList.add(sign.dataFimSigno);
-        }
-        return endList;
+        return Arrays.stream(values())
+                .map(s -> s.dataFimSigno)
+                .toList();
     }
 
     public static Signos getSigno(MonthDay startDate, MonthDay endDate){
-        for(Signos sign : values()) {
-            if(sign.dataInicioSigno == startDate && sign.dataFimSigno == endDate) {
-                return sign;
-            }
-        }
-        return null;
+
+        return Arrays.stream(values())
+                .filter(s -> s.dataInicioSigno == startDate && s.dataFimSigno == endDate)
+                .findFirst()
+                .orElseThrow();
     }
 
-    public static String[] getAllSignos(Class<? extends Enum<?>> e) {
+    private static String[] getAllSignos(Class<? extends Enum<?>> e) {
         return Arrays.stream(e.getEnumConstants()).map(Enum::name).toArray(String[]::new);
     }
 }

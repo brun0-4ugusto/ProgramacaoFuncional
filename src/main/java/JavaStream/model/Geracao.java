@@ -2,7 +2,9 @@ package JavaStream.model;
 
 import java.time.Year;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public enum Geracao {
     BOOMER(Year.of(1945), Year.of(1964)),
@@ -21,30 +23,25 @@ public enum Geracao {
     }
     
     public static List<Year> getDataInicioGeracao() {
-        List<Year> datasInicio = new ArrayList<>();
 
-        for (Geracao geracao : values()) {
-            datasInicio.add(geracao.dataInicio);
-        }
-        return datasInicio;
+        return Arrays.stream(values())
+                .map(g -> g.dataInicio)
+                .toList();
     }
 
     public static List<Year> getDataFimGeracao() {
-        List<Year> datasFim = new ArrayList<>();
 
-        for (Geracao geracao : values()) {
-            datasFim.add(geracao.dataFim);
-        }
-        return datasFim;
+        return Arrays.stream(values())
+                .map(g -> g.dataFim)
+                .toList();
     }
 
     public static Geracao getGeracao(Year anoInicio, Year anoFim){
-        for(Geracao geracao : values()) {
-            if(geracao.dataInicio == anoInicio && geracao.dataFim == anoFim) {
-                return geracao;
-            }
-        }
-        return null;
+
+        return Arrays.stream(values())
+                .filter(g -> g.dataInicio == anoInicio && g.dataFim == anoFim)
+                .findFirst()
+                .orElse(null);
     }
 
 }
