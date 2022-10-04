@@ -54,22 +54,18 @@ public class Pessoa {
         return "Geração não exisiste!";
     }
 
-    private static boolean isWithinRange(MonthDay dataNascimento, MonthDay startDate, MonthDay endDate) {
-        return !(dataNascimento.isBefore(startDate) || dataNascimento.isAfter(endDate));
+    private static boolean isWithinRange(Year dataNascimento, Year dataInicio, Year dataFim) {
+        return !(dataNascimento.isBefore(dataInicio) || dataNascimento.isAfter(dataFim));
     }
 
-    private static boolean isWithinRange(Year dataNascimento, Year startDate, Year endDate) {
-        return !(dataNascimento.isBefore(startDate) || dataNascimento.isAfter(endDate));
-    }
-
-    private static boolean isWithinRange(LocalDate dataNascimento, MonthDay startDate, MonthDay endDate) {
+    private static boolean isWithinRange(LocalDate dataNascimento, MonthDay dataInicio, MonthDay dataFim) {
         int anoInicio;
         int anoFim;
 
-        if (dataNascimento.getMonth().equals(Month.JANUARY) && startDate.getMonth().equals(Month.DECEMBER) && endDate.getMonth().equals(Month.JANUARY)) {
+        if (dataNascimento.getMonth().equals(Month.JANUARY) && dataInicio.getMonth().equals(Month.DECEMBER) && dataFim.getMonth().equals(Month.JANUARY)) {
             anoInicio = dataNascimento.getYear() - 1;
             anoFim = dataNascimento.getYear();
-        } else if (dataNascimento.getMonth().equals(Month.DECEMBER) && startDate.getMonth().equals(Month.DECEMBER) && endDate.getMonth().equals(Month.JANUARY)) {
+        } else if (dataNascimento.getMonth().equals(Month.DECEMBER) && dataInicio.getMonth().equals(Month.DECEMBER) && dataFim.getMonth().equals(Month.JANUARY)) {
             anoInicio = dataNascimento.getYear();
             anoFim = dataNascimento.getYear() + 1;
         }
@@ -77,9 +73,8 @@ public class Pessoa {
             anoInicio = dataNascimento.getYear();
             anoFim = dataNascimento.getYear();
         }
-
-        LocalDate inicio = LocalDate.of(anoInicio, startDate.getMonth(), startDate.getDayOfMonth());
-        LocalDate fim = LocalDate.of(anoFim, endDate.getMonth(), endDate.getDayOfMonth());
+        LocalDate inicio = LocalDate.of(anoInicio, dataInicio.getMonth(), dataInicio.getDayOfMonth());
+        LocalDate fim = LocalDate.of(anoFim, dataFim.getMonth(), dataFim.getDayOfMonth());
 
         return !(dataNascimento.isBefore(inicio) || dataNascimento.isAfter(fim));
     }

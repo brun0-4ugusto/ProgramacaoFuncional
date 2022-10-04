@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class PessoaRepository implements Closeable {
     @SneakyThrows
     public void criarTabelaPessoa() {
 
-        final var SQL = "CREATE TABLE Pessoa (" +
+        final String SQL = "CREATE TABLE Pessoa (" +
             "nome VARCHAR(255) NOT NULL," +
             "cidadeNascimento VARCHAR(255) NOT NULL," +
             "dataNascimento VARCHAR(255) NOT NULL," +
@@ -35,7 +36,7 @@ public class PessoaRepository implements Closeable {
     @SneakyThrows
     public void inserirPessoas(List<Pessoa> pessoas) {
 
-        for (var pessoa : pessoas) {
+        for (Pessoa pessoa : pessoas) {
             adicionarPessoa(pessoa);
         }
     }
@@ -44,7 +45,7 @@ public class PessoaRepository implements Closeable {
     @SneakyThrows
     public List<Pessoa> findAll() {
 
-        var resultSet = getQueryResults("SELECT * FROM Pessoa");
+        ResultSet resultSet = getQueryResults("SELECT * FROM Pessoa");
 
         ArrayList<Pessoa> pessoas = new ArrayList<>();
         while (resultSet.next()) {
@@ -57,13 +58,13 @@ public class PessoaRepository implements Closeable {
     @SneakyThrows
     private void adicionarPessoa(Pessoa pessoa) {
 
-        var statement = createPessoaInsertStatement(pessoa);
+        PreparedStatement statement = createPessoaInsertStatement(pessoa);
         executePreparedStatement(statement);
     }
 
     @SneakyThrows
     private PreparedStatement createPessoaInsertStatement(Pessoa pessoa) {
-        final var SQL = "INSERT INTO Pessoa (" +
+        final String SQL = "INSERT INTO Pessoa (" +
                 "nome, cidadeNascimento, dataNascimento, signo" +
                 ") VALUES (?, ?, ?, ?)";
 
@@ -83,9 +84,9 @@ public class PessoaRepository implements Closeable {
 
     @SneakyThrows
     private void adicionarResultadoQueryEmPessoas(ResultSet resultSet, ArrayList<Pessoa> pessoas) {
-        var nome = resultSet.getString("nome");
-        var cidade = resultSet.getString("cidadeNascimento");
-        var dataNascimento = resultSet.getDate("dataNascimento").toLocalDate();
+        String nome = resultSet.getString("nome");
+        String cidade = resultSet.getString("cidadeNascimento");
+        LocalDate dataNascimento = resultSet.getDate("dataNascimento").toLocalDate();
 
         var pessoa = new Pessoa(nome, cidade, dataNascimento);
         pessoas.add(pessoa);
@@ -93,7 +94,7 @@ public class PessoaRepository implements Closeable {
 
     @SneakyThrows
     private ResultSet getQueryResults(String sql) {
-        var statement = connection.createStatement();
+        Statement statement = connection.createStatement();
 
         return statement.executeQuery(sql);
     }
