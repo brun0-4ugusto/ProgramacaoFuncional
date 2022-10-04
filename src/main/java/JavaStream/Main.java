@@ -5,6 +5,7 @@ import JavaStream.model.Geracao;
 import JavaStream.model.Pessoa;
 import JavaStream.repository.PessoaRepository;
 import JavaStream.service.Service;
+import JavaStream.type.Tuple;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -13,15 +14,22 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws Exception {
+
         PessoaRepository repository = inicializarRepository();
         Service service = new Service(repository);
 
-        System.out.println(service.retornaIdadeMedia());
-        System.out.println(service.retornaIdadeProximaCopa());
-        System.out.println(service.retornaPessoaMaisVelha());
-        System.out.println(service.retornaQuantidadeDePessoasMenorDeIdade());
-        System.out.println(service.retornaQuantidadeDePessoasMaiorDeIdade());
-        System.out.println(service.retornaPessoasDaGeracao(Geracao.BOOMER));
+        System.out.format("Idade média das pessoas: %.2f%n", service.retornaIdadeMedia());
+        System.out.format("Dados para a proxima copa: %s%n", service.retornaIdadeProximaCopa());
+        System.out.format("Pessoa mais velha: %s%n", service.retornaPessoaMaisVelha());
+
+        Tuple<Long, Long> quantidadeMenoresEMaiores = service.retornaQuantidadeDePessoasMenorEMaiorDeIdade();
+        long quantidadeMenores = quantidadeMenoresEMaiores.first;
+        long quantidadeMaiores = quantidadeMenoresEMaiores.second;
+
+        System.out.format("Quantidade de menores de idade: %d%n", quantidadeMenores);
+        System.out.format("Quantidade de maiores de idade: %d%n", quantidadeMaiores);
+
+        System.out.format("Pessoas da geracao z: %s%n", service.retornaPessoasDaGeracao(Geracao.Z));
 
     }
 

@@ -1,41 +1,44 @@
 package JavaStream.service;
 
+import JavaStream.dto.PessoaIdadeCopaDto;
 import JavaStream.model.Geracao;
 import JavaStream.model.Pessoa;
 import JavaStream.model.Signos;
 import JavaStream.repository.PessoaRepository;
+import JavaStream.type.Tuple;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class Service {
     private final PessoaRepository repository;
 
-    // TODO: Obter a lista de pessoas que são do signo X e tem mais de Y anos.
+    // Obter a lista de pessoas que são do signo X e tem mais de Y anos.
     public List<Pessoa> retornaSignoIdade(Signos signo, int idade) {
+        List<Pessoa> pessoas = repository.findAll();
 
-        return new ArrayList<Pessoa>();
+        return pessoas.stream()
+            .filter(
+                p -> p.getSigno().equalsIgnoreCase(signo.name()) &&
+                p.getIdade() == idade
+            ).toList();
     }
 
-    // TODO: Obter a lista e a quantidade de pessoas que são menor e maior de idade (List<Pessoa> menores, int quantidadeMenores, List<Pessoa> maiores, int quantidade maiores)
-    public List<Pessoa> retornaQuantidadeDePessoasMaiorDeIdade() {
-        /*
-        * {
-        *   "maiores": [{...}, {...}],
-        *   "total": xxx
-        * }
-        * */
-
+    // Obter a lista e a quantidade de pessoas que são menor e maior de idade (List<Pessoa> menores, int quantidadeMenores, List<Pessoa> maiores, int quantidade maiores)
+    public Tuple<Long, Long> retornaQuantidadeDePessoasMenorEMaiorDeIdade() {
         List<Pessoa> pessoas = repository.findAll();
-        return pessoas.stream().filter(pessoa -> pessoa.getIdade() > 18).toList();
-    }
 
-    public List<Pessoa> retornaQuantidadeDePessoasMenorDeIdade() {
-        List<Pessoa> pessoas = repository.findAll();
-        return pessoas.stream().filter(pessoa -> pessoa.getIdade() < 18).toList();
+        Long maiores = pessoas.stream().filter(p -> p.getIdade() >= 18).count();
+        Long menores = pessoas.stream().filter(p -> p.getIdade() < 18).count();
+
+        return Tuple.create(menores, maiores);
     }
 
     // TODO: Obter a lista de pessoas que pertencem a geração {}
@@ -46,32 +49,26 @@ public class Service {
     }
 
     // TODO: Obter a lista de todas as pessoas e informar a idade delas na próxima copa do mundo (2026) (List<Pessoa> pessoas, List<int> idade)
-    public List<Pessoa> retornaIdadeProximaCopa() {
+    public List<PessoaIdadeCopaDto> retornaIdadeProximaCopa() {
         List<Pessoa> pessoas = repository.findAll();
 
-       List<Pessoa> novasPessoas = pessoas.stream()
-               .map(pessoa -> new Pessoa(pessoa.getNome(),
-                                         pessoa.getCidadeNascimento(),
-                                         pessoa.getDataNascimento().minusYears(4)))
-               .toList();
-
-        return novasPessoas;
+        return pessoas.stream()
+                .map(pessoa -> new PessoaIdadeCopaDto(pessoa, pessoa.getIdade() + 4))
+                .toList();
     }
 
     // TODO: Obter a pessoa mais velha e mais nova (List<pessoa> maisNova, List<pessoa> maisVelha)
     public Pessoa retornaPessoaMaisVelha() {
         List<Pessoa> pessoas = repository.findAll();
-        return pessoas.stream().max(Comparator.comparing(Pessoa::getIdade)).get();
+        return pessoas.stream().max(Comparator.comparing(Pessoa::getIdade))
+                .orElse(new Pessoa("Matusalem", "Longe", LocalDate.of(0, 1, 1)));
     }
 
     // TODO: Calcular a idade média e total das pessoas (double idadeMedia, int totalPessoas)
     public double retornaIdadeMedia() {
         List<Pessoa> pessoas = repository.findAll();
 
-        double mediaDeTodasAsIdades = pessoas.stream()
-                .mapToDouble(Pessoa::getIdade).average().getAsDouble();
-//                .reduce(0, (resultadoParcial, pessoa) -> resultadoParcial + pessoa.getIdade(), Integer::sum);
-
-        return mediaDeTodasAsIdades;
+        return pessoas.stream()
+                .mapToDouble(Pessoa::getIdade).average().orElse(0.0);
     }
 }
