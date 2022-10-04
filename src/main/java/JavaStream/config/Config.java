@@ -1,11 +1,16 @@
 package JavaStream.config;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
+import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
+import com.google.gson.stream.JsonWriter;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 public final class Config {
@@ -19,6 +24,9 @@ public final class Config {
     }
 
     public static Gson getConfiguredJsonSerializer() {
-        return new Gson();
+        return new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDate.class, LocalDateTypeAdapter.getInstance())
+                .create();
     }
 }
