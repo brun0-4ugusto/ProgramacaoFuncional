@@ -6,12 +6,16 @@ import JavaStream.model.Pessoa;
 import JavaStream.repository.PessoaRepository;
 import JavaStream.service.Service;
 import JavaStream.type.Tuple;
+import com.google.gson.Gson;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
+
+    private final static Gson jsonSerializer = Config.getConfiguredJsonSerializer();
 
     public static void main(String[] args) throws Exception {
 

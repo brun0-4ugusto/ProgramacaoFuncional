@@ -1,9 +1,12 @@
 package JavaStream.dto;
 
 import JavaStream.model.Pessoa;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
-public record PessoaIdadeCopaDto(
-    Pessoa pessoa,
-    int idade
-) {
+@Getter
+@AllArgsConstructor
+public class PessoaIdadeCopaDto {
+    private Pessoa pessoa;
+    private int idade;
 }

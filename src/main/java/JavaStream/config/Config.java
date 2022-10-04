@@ -1,5 +1,8 @@
 package JavaStream.config;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -13,5 +16,9 @@ public final class Config {
         properties.load(inputStream);
 
         return DriverManager.getConnection(properties.getProperty("database.h2.url"), properties.getProperty("database.h2.username"), properties.getProperty("database.h2.password"));
+    }
+
+    public static Gson getConfiguredJsonSerializer() {
+        return new Gson();
     }
 }
