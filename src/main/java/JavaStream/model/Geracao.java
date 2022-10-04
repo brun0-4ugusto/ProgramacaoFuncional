@@ -21,7 +21,7 @@ public enum Geracao {
     }
     
     public static List<Year> getDataInicioGeracao() {
-        List<Year> datasInicio = new ArrayList<Year>();
+        List<Year> datasInicio = new ArrayList<>();
 
         for (Geracao geracao : values()) {
             datasInicio.add(geracao.dataInicio);
@@ -30,7 +30,7 @@ public enum Geracao {
     }
 
     public static List<Year> getDataFimGeracao() {
-        List<Year> datasFim = new ArrayList<Year>();
+        List<Year> datasFim = new ArrayList<>();
 
         for (Geracao geracao : values()) {
             datasFim.add(geracao.dataFim);
