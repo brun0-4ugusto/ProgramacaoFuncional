@@ -7,14 +7,10 @@ import JavaStream.model.Signos;
 import JavaStream.repository.PessoaRepository;
 import JavaStream.type.Tuple;
 import lombok.RequiredArgsConstructor;
-import lombok.val;
 
 import java.time.LocalDate;
-import java.time.Year;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class Service {
@@ -27,28 +23,31 @@ public class Service {
         return pessoas.stream()
             .filter(
                 p -> p.getSigno().equalsIgnoreCase(signo.name()) &&
-                p.getIdade() == idade
+                p.getIdade() > idade
             ).toList();
     }
 
     // Obter a lista e a quantidade de pessoas que são menor e maior de idade (List<Pessoa> menores, int quantidadeMenores, List<Pessoa> maiores, int quantidade maiores)
-    public Tuple<Long, Long> retornaQuantidadeDePessoasMenorEMaiorDeIdade() {
+    public Tuple<Tuple<List<Pessoa>, Integer>, Tuple<List<Pessoa>, Integer>> retornaQuantidadeDePessoasMenorEMaiorDeIdade() {
         List<Pessoa> pessoas = repository.findAll();
 
-        Long maiores = pessoas.stream().filter(p -> p.getIdade() >= 18).count();
-        Long menores = pessoas.stream().filter(p -> p.getIdade() < 18).count();
+        List<Pessoa> listaMenores = pessoas.stream().filter(p -> p.getIdade() < 18).toList();
+        List<Pessoa> listaMaiores = pessoas.stream().filter(p -> p.getIdade() >= 18).toList();
 
-        return Tuple.create(menores, maiores);
+        Tuple<List<Pessoa>, Integer> tupleListaMenores = Tuple.create(listaMenores, listaMenores.size());
+        Tuple<List<Pessoa>, Integer> tupleListaMaiores = Tuple.create(listaMaiores, listaMaiores.size());
+
+        return Tuple.create(tupleListaMenores, tupleListaMaiores);
     }
 
-    // TODO: Obter a lista de pessoas que pertencem a geração {}
+    // Obter a lista de pessoas que pertencem a geração {}
     public List<Pessoa> retornaPessoasDaGeracao(Geracao geracao) {
         List<Pessoa> pessoas = repository.findAll();
 
         return pessoas.stream().filter(pessoa -> pessoa.getGeracao().equals(geracao.name())).toList();
     }
 
-    // TODO: Obter a lista de todas as pessoas e informar a idade delas na próxima copa do mundo (2026) (List<Pessoa> pessoas, List<int> idade)
+    // Obter a lista de todas as pessoas e informar a idade delas na próxima copa do mundo (2026) (List<Pessoa> pessoas, List<int> idade)
     public List<PessoaIdadeCopaDto> retornaIdadeProximaCopa() {
         List<Pessoa> pessoas = repository.findAll();
 
@@ -57,14 +56,20 @@ public class Service {
                 .toList();
     }
 
-    // TODO: Obter a pessoa mais velha e mais nova (List<pessoa> maisNova, List<pessoa> maisVelha)
-    public Pessoa retornaPessoaMaisVelha() {
+    // Obter a pessoa mais velha e mais nova (List<pessoa> maisNova, List<pessoa> maisVelha)
+    public Tuple<Pessoa, Pessoa> retornaPessoaMaisVelha() {
         List<Pessoa> pessoas = repository.findAll();
-        return pessoas.stream().max(Comparator.comparing(Pessoa::getIdade))
-                .orElse(new Pessoa("Matusalem", "Longe", LocalDate.of(0, 1, 1)));
+
+        Pessoa pessoaMaisVelha = pessoas.stream().max(Comparator.comparing(Pessoa::getIdade))
+                .orElse(new Pessoa("Matusalem", "Longe", LocalDate.of(900, 1, 1)));
+
+        Pessoa pessoaMaisNova = pessoas.stream().min(Comparator.comparing(Pessoa::getIdade))
+                .orElse(new Pessoa("Enzo", "Perto", LocalDate.now()));
+
+        return Tuple.create(pessoaMaisNova, pessoaMaisVelha);
     }
 
-    // TODO: Calcular a idade média e total das pessoas (double idadeMedia, int totalPessoas)
+    // Calcular a idade média e total das pessoas (double idadeMedia, int totalPessoas)
     public double retornaIdadeMedia() {
         List<Pessoa> pessoas = repository.findAll();
 
