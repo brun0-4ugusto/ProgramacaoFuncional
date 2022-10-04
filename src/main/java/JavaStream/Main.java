@@ -21,7 +21,7 @@ public class Main {
         PessoaRepository repository = inicializarRepository();
         Service service = new Service(repository);
 
-        System.out.format("Pessoas do signo Touro maiores de 15 anos: %s%n", service.retornaSignoIdade(Signos.TOURO, 15));
+        System.out.format("Pessoas do signo Touro maiores de 15 anos: %s%n", jsonSerializer.toJson(service.retornaSignoIdade(Signos.TOURO, 15)));
 
         System.out.format("Idade média das pessoas: %.2f%n", service.retornaIdadeMedia());
         System.out.format("Dados para a proxima copa: %s%n", jsonSerializer.toJson(service.retornaIdadeProximaCopa()));

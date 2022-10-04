@@ -47,7 +47,6 @@ public class Pessoa {
         for (Year dataInicio : datasInicio) {
             if (isWithinRange(anoNascimento, dataInicio, datasFim.get(datasInicio.indexOf(dataInicio)))) {
                 return Geracao.getGeracao(dataInicio, datasFim.get(datasInicio.indexOf(dataInicio))).name();
-
             }
         }
 

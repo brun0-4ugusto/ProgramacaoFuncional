@@ -54,7 +54,7 @@ public enum Signos {
         return null;
     }
 
-    public static String[] getAllSignos(Class<? extends Enum<?>> e) {
+    private static String[] getAllSignos(Class<? extends Enum<?>> e) {
         return Arrays.stream(e.getEnumConstants()).map(Enum::name).toArray(String[]::new);
     }
 }
